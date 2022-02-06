@@ -1,0 +1,47 @@
+version: '3.5'
+services:
+  traefik:
+    image: traefik:v2.6
+    container_name: proxy
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes: 
+      - /var/run/podman/podman.sock:/var/run/docker.sock:Z
+      - ./traefik.yml:/etc/traefik/traefik.yml:z
+      - ./proxy.log:/log/proxy.log:z
+      - ./access.log:/log/access.log:z
+      -  ./ssl:/certs:Z
+      - ./acme.json:/etc/traefik/acme.json:Z
+    networks:
+      - proxy
+    privileged: true 
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.traefik.tls=true"
+  catapp:
+    image: mikesir87/cats:1.0
+    container_name: catapp
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.catapp.rule=Host(`catapp.local`)"
+      - "traefik.http.routers.catapp.entrypoints=web"
+      - "traefik.http.routers.catapp.entrypoints=websecure"
+      - "traefik.http.routers.catapp.service=catapp-service"
+      - "traefik.http.services.catapp-service.loadbalancer.server.port=5000"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.catapp.tls=true"
+    expose:
+      - 5000
+    networks:
+      - proxy
+    #ports:
+    #  - 5000:5000
+    privileged: true
+
+
+networks:
+    proxy:
+       external: true

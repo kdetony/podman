@@ -1,0 +1,45 @@
+global:
+  checkNewVersion: true
+
+api:
+  dashboard: true
+  insecure: true
+
+providers:
+  docker: 
+    exposedByDefault: false
+    endpoint: "unix:///var/run/docker.sock" 
+
+log:
+  level: DEBUG
+  filepath: "/log/proxy.log" 
+
+accessLog:
+  filepath: "/log/access.log" 
+  bufferingSize: 100
+
+entryPoints:
+  web:
+    address: ":80"
+    http:
+      redirections:
+         entryPoint:
+            to: websecure
+            
+  websecure:
+    address: ":443"
+    http:
+      tls: {}
+
+tls:
+ stores:
+  default:
+  defaultCertificate:
+      certFile: /certs/crt.pem
+      keyFile: /certs/key.pem
+     
+ certificates: 
+  - certFile: /certs/crt.pem
+    keyFile: /certs/key.pem
+    stores:
+      - default 
