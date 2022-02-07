@@ -38,6 +38,12 @@ Ahora si, creamos un usuario:
 
 > passwd podman
 
+Ejecutamos:
+
+> loginctl enable-linger podman
+> export XDG_RUNTIME_DIR=/run/user/$(id -u)
+
+
 Iniciamos de la siguiente forma el servicio:
 
 > systemctl enable --now podman.socket
@@ -76,7 +82,7 @@ WantedBy=sockets.target
 Creamos el servicio rootless para podman:
 
 ```
-> vim .config/systemd/user/podman.service
+vim .config/systemd/user/podman.service
 
 [Unit]
 Description=Podman API Service
