@@ -65,6 +65,13 @@ por ello podemos realizar esta configuracion (nos permitira hacer un artificio a
 
 > su - podman 
 
+Ejecutamos:
+
+> loginctl enable-linger podman
+
+> export XDG_RUNTIME_DIR=/run/user/$(id -u)
+
+
 ```
 vim .config/systemd/user/podman.socket
 
