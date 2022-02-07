@@ -41,6 +41,7 @@ Ahora si, creamos un usuario:
 Ejecutamos:
 
 > loginctl enable-linger podman
+
 > export XDG_RUNTIME_DIR=/run/user/$(id -u)
 
 
