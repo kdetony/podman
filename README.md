@@ -32,6 +32,8 @@ Vamos a aumentar el numero de namespace:
 
 > sysctl -p /etc/sysctl.d/userns.conf
 
+Esta accion habilita el uso de espacios de nombres/namespace de red sin root.
+
 Ahora si, creamos un usuario:
 
 > useradd -c "podman admin" podman 
