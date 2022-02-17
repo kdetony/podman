@@ -14,7 +14,7 @@ Este repositorio aloja ejemplos de podman usando rootless.
 
 Vamos a configurar lo siguiente:
 
-> dnf install slirp4netns podman -y 
+> dnf install slirp4netns podman podman-plugins podman-docker -y 
 
 **slirp4netns** se conectara a  network namespace y podremos exponer puertos fuera de la red completamente en rootless (sin privilegios)
 
